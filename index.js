@@ -6,5 +6,5 @@ app.get("/",function(rec,res){
 })
 
 app.listen(3000,function(){
-    console.log("conexão inicial na porta 3000")
+    console.log("conexão iniciada")
 })
