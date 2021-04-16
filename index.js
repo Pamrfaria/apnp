@@ -3,6 +3,7 @@ const app = express()
 var bodyParser = require('body-parser')
 var cookieParser = require ('cookie-parser')
 var path = require('path')
+var Usuario = require('./model/usuario')
 
 app.use(cookieParser())
 
@@ -13,16 +14,28 @@ app.set("view engine","ejs")
 
 app.use(express.static(path.join(__dirname,"public")))
 
-app.get("/usuarios",function(rec,res){
-    res.render('usuarios.ejs',{usuarios:[
-        {nome:'Pamela',email:'pamela096@gmail.com'},
-        {nome:'Paulo',email:'paulo125@gmail.com'},
-        {nome:'Marcia',email:'marcia123@gmail.com'},
-        {nome:'Andrio',email:'andrio675@gmail.com'}
-    ]})    
-})
 app.get("/",function(rec,res){
     res.render('index.ejs',{})    
+})
+
+app.get('/add',function(rec,res){
+    res.render('adiciona.ejs')
+})
+
+app.post('/add',function(req,res){
+    var usuario = new Usuario({
+        nome: req.body.txtNome,
+        email: req.body.txtEmail,
+        senha: req.body.txtSenha,
+        foto: req.body.txtFoto
+    })
+    usuario.save(function(err){
+        if(err){
+            console.log(err)
+        }else{
+            res.redirect('/');
+        }
+    })
 })
 
 app.listen(3000,function(){
